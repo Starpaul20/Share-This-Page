@@ -249,6 +249,17 @@ none=None',
 	);
 	$db->insert_query("settings", $insertarray);
 
+	$insertarray = array(
+		'name' => 'google_width',
+		'title' => 'Google Plus Annotation Width',
+		'description' => 'If using inline annotation, what should the maximum width be in pixels? Must be larger than 120.',
+		'optionscode' => 'numeric',
+		'value' => 300,
+		'disporder' => 18,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
 	rebuild_settings();
 
 	// Insert Templates
@@ -317,7 +328,7 @@ none=None',
 	$insert_array = array(
 		'title'		=> 'global_share_google',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<div class="g-plusone"{$data_size_google}{$data_annotation}></div>
+<div class="g-plusone"{$data_size_google}{$data_annotation}{$data_width}></div>
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -335,7 +346,7 @@ none=None',
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation','google_width')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
 	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google')");
 	rebuild_settings();
@@ -502,6 +513,13 @@ function sharethispage_run()
 		else
 		{
 			$data_annotation = "";
+		}
+
+		$data_width = '';
+		if($mybb->settings['google_annotation'] == 'inline' && (int)$mybb->settings['google_width'] >= 120)
+		{
+			$google_width = (int)$mybb->settings['google_width'];
+			$data_width = " data-width=\"{$google_width}\"";
 		}
 
 		eval('$google = "'.$templates->get('global_share_google').'";');
