@@ -59,12 +59,23 @@ function sharethispage_activate()
 	$db->insert_query("settings", $insertarray);
 
 	$insertarray = array(
+		'name' => 'twitter_text',
+		'title' => 'Tweet Text',
+		'description' => 'Specify any text to add when visitors when they use the Tweet button. If blank, page title will be used.',
+		'optionscode' => 'text',
+		'value' => '',
+		'disporder' => 2,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
+	$insertarray = array(
 		'name' => 'twitter_via',
 		'title' => 'Via Username',
 		'description' => 'Specify a Twitter account to recommend to visitors after they use the Tweet button. Do not include the at symbol (@).',
 		'optionscode' => 'text',
 		'value' => '',
-		'disporder' => 2,
+		'disporder' => 3,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -75,7 +86,7 @@ function sharethispage_activate()
 		'description' => 'Specify another Twitter account to recommend to visitors after they use the Tweet button. Do not include the at symbol (@).',
 		'optionscode' => 'text',
 		'value' => '',
-		'disporder' => 3,
+		'disporder' => 4,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -86,7 +97,7 @@ function sharethispage_activate()
 		'description' => 'Do you wish to use a large twitter button?',
 		'optionscode' => 'yesno',
 		'value' => 0,
-		'disporder' => 4,
+		'disporder' => 5,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -97,7 +108,7 @@ function sharethispage_activate()
 		'description' => 'Do you wish to show a bubble showing how many times that page has been tweeted?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 5,
+		'disporder' => 6,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -108,7 +119,18 @@ function sharethispage_activate()
 		'description' => 'Specify a hashtag you wish tweets to use. Do not include the hashtag symbol (#).',
 		'optionscode' => 'text',
 		'value' => '',
-		'disporder' => 6,
+		'disporder' => 7,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
+	$insertarray = array(
+		'name' => 'twitter_dnt',
+		'title' => 'Opt-out Of Tailoring Twitter',
+		'description' => 'Do you wish to opt-out of tailoring Twitter suggestions?',
+		'optionscode' => 'yesno',
+		'value' => 0,
+		'disporder' => 8,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -119,7 +141,7 @@ function sharethispage_activate()
 		'description' => 'Do you wish to show a like/recommend this button for Facebook?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 7,
+		'disporder' => 9,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -132,7 +154,7 @@ function sharethispage_activate()
 like=Like
 recommend=Recommend',
 		'value' => 'like',
-		'disporder' => 8,
+		'disporder' => 10,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -147,7 +169,7 @@ box_count=Box Count
 button_count=Button Count
 button=Button',
 		'value' => 'button_count',
-		'disporder' => 9,
+		'disporder' => 11,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -158,7 +180,7 @@ button=Button',
 		'description' => 'Do you wish to include a share button alongside of your Facebook like/recommend button?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 10,
+		'disporder' => 12,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -169,7 +191,7 @@ button=Button',
 		'description' => 'Do you wish to show profile photos when 2 or more Facebook friends like this?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 11,
+		'disporder' => 13,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -180,7 +202,7 @@ button=Button',
 		'description' => 'Do you wish to show a recommend button for Google Plus?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 12,
+		'disporder' => 14,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -195,7 +217,7 @@ medium=Medium
 standard=Standard
 tall=Tall',
 		'value' => 'medium',
-		'disporder' => 13,
+		'disporder' => 15,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -209,7 +231,7 @@ inline=Inline
 bubble=Bubble
 none=None',
 		'value' => 'bubble',
-		'disporder' => 14,
+		'disporder' => 16,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -234,7 +256,7 @@ none=None',
 	$insert_array = array(
 		'title'		=> 'global_share_twitter',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<a href="https://twitter.com/share" class="twitter-share-button"{$data_via}{$data_size}{$data_related}{$data_count}{$data_hashtags}>{$lang->tweet}</a>
+<a href="https://twitter.com/share" class="twitter-share-button"{$data_text}{$data_via}{$data_size}{$data_related}{$data_count}{$data_hashtags}{$data_dnt}>{$lang->tweet}</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+\'://platform.twitter.com/widgets.js\';fjs.parentNode.insertBefore(js,fjs);}}(document, \'script\', \'twitter-wjs\');</script>
 </div>'),
 		'sid'		=> '-1',
@@ -300,7 +322,7 @@ none=None',
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_faces','enablegoogle','google_layout','google_annotation')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_faces','enablegoogle','google_layout','google_annotation')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
 	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google')");
 	rebuild_settings();
@@ -331,6 +353,12 @@ function sharethispage_run()
 	$twitter = '';
 	if($mybb->settings['enabletwitter'] == 1)
 	{
+		if(!empty($mybb->settings['twitter_text']))
+		{
+			$twitter_text = htmlspecialchars_uni($mybb->settings['twitter_text']);
+			$data_text = " data-text=\"{$twitter_text}\"";
+		}
+
 		if(!empty($mybb->settings['twitter_via']))
 		{
 			$twitter_via = htmlspecialchars_uni($mybb->settings['twitter_via']);
@@ -357,6 +385,11 @@ function sharethispage_run()
 		{
 			$twitter_hashtag = htmlspecialchars_uni($mybb->settings['twitter_hashtag']);
 			$data_hashtags = " data-hashtags=\"{$twitter_hashtag}\"";
+		}
+
+		if($mybb->settings['twitter_dnt'] == 1)
+		{
+			$data_dnt = " data-dnt=\"true\"";
 		}
 
 		eval('$twitter = "'.$templates->get('global_share_twitter').'";');
