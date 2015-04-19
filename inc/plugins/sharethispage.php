@@ -485,6 +485,7 @@ function sharethispage_run()
 	{
 		eval('$google_header = "'.$templates->get('global_share_google_header').'";');
 
+		$data_size_google = '';
 		if($mybb->settings['google_layout'] == 'small')
 		{
 			$data_size_google = " data-size=\"small\"";
@@ -497,11 +498,8 @@ function sharethispage_run()
 		{
 			$data_size_google = " data-size=\"tall\"";
 		}
-		else
-		{
-			$data_size_google = "";
-		}
 
+		$data_annotation = '';
 		if($mybb->settings['google_annotation'] == 'inline')
 		{
 			$data_annotation = " data-annotation=\"inline\" data-width=\"300\"";
@@ -509,10 +507,6 @@ function sharethispage_run()
 		elseif($mybb->settings['google_annotation'] == 'none')
 		{
 			$data_annotation = " data-annotation=\"none\"";
-		}
-		else
-		{
-			$data_annotation = "";
 		}
 
 		$data_width = '';
