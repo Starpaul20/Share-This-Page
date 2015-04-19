@@ -197,12 +197,25 @@ button=Button',
 	$db->insert_query("settings", $insertarray);
 
 	$insertarray = array(
+		'name' => 'facebook_colorscheme',
+		'title' => 'Facebook Text Color Scheme',
+		'description' => 'If using standard layout, what color scheme do you wish to use for the text shown?',
+		'optionscode' => 'radio
+light=Light
+dark=Dark',
+		'value' => 'light',
+		'disporder' => 14,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
+	$insertarray = array(
 		'name' => 'enablegoogle',
 		'title' => 'Enable Google Plus',
 		'description' => 'Do you wish to show a recommend button for Google Plus?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 14,
+		'disporder' => 15,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -217,7 +230,7 @@ medium=Medium
 standard=Standard
 tall=Tall',
 		'value' => 'medium',
-		'disporder' => 15,
+		'disporder' => 16,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -231,7 +244,7 @@ inline=Inline
 bubble=Bubble
 none=None',
 		'value' => 'bubble',
-		'disporder' => 16,
+		'disporder' => 17,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -272,7 +285,7 @@ none=None',
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, \'script\', \'facebook-jssdk\'));</script>'),
 		'sid'		=> '-1',
@@ -284,7 +297,7 @@ none=None',
 	$insert_array = array(
 		'title'		=> 'global_share_facebook',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<div class="fb-like"{$data_layout}{$data_action}{$data_show_faces}{$data_share}></div>
+<div class="fb-like"{$data_layout}{$data_action}{$data_show_faces}{$data_share}{$data_colorscheme}></div>
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -322,7 +335,7 @@ none=None',
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_faces','enablegoogle','google_layout','google_annotation')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
 	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google')");
 	rebuild_settings();
@@ -442,6 +455,15 @@ function sharethispage_run()
 		else
 		{
 			$data_show_faces = " data-show-faces=\"false\"";
+		}
+
+		if($mybb->settings['facebook_colorscheme'] == 'dark')
+		{
+			$data_colorscheme = " data-colorscheme=\"dark\"";
+		}
+		else
+		{
+			$data_colorscheme = " data-colorscheme=\"light\"";
 		}
 
 		eval('$facebook = "'.$templates->get('global_share_facebook').'";');
