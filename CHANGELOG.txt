@@ -1,2 +1,9 @@
+1.1 (April 19th, 2015)
+- Added option for Twitter tweet text
+- Added option for Twitter opt-out of tailoring suggestions
+- Added option for Facebook text color scheme
+- Added option for Google Plus annotation width
+- Updated Facebook code version
+
 1.0 (December 7th, 2014)
 - Initial release

@@ -1,6 +1,6 @@
 ## INFORMATION ##
 
-Share This Page (1.0) for MyBB 1.8
+Share This Page (1.1) for MyBB 1.8
 Created by: Starpaul20
 Copyright: ©2014
 License: GPL
@@ -20,4 +20,4 @@ The settings for this plugin are located under the 'Share This Page Settings' ad
 
 ## UPDATING ##
 
-Any beta version should be reinstalled.
+If you're updating from any previous version, you must first deactivate the plugin, upload all new files and reactivate.
