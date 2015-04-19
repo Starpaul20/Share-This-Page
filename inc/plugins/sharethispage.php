@@ -133,7 +133,7 @@ like=Like
 recommend=Recommend',
 		'value' => 'like',
 		'disporder' => 8,
-		'gid' => $gid
+		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
 
@@ -148,7 +148,7 @@ button_count=Button Count
 button=Button',
 		'value' => 'button_count',
 		'disporder' => 9,
-		'gid' => $gid
+		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
 
@@ -196,7 +196,7 @@ standard=Standard
 tall=Tall',
 		'value' => 'medium',
 		'disporder' => 13,
-		'gid' => $gid
+		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
 
@@ -210,7 +210,7 @@ bubble=Bubble
 none=None',
 		'value' => 'bubble',
 		'disporder' => 14,
-		'gid' => $gid
+		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
 
