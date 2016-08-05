@@ -186,12 +186,25 @@ button=Button',
 	$db->insert_query("settings", $insertarray);
 
 	$insertarray = array(
+		'name' => 'facebook_size',
+		'title' => 'Facebook Size',
+		'description' => 'Which size would you like your Facebook like/recommend button to be?',
+		'optionscode' => 'radio
+small=Small
+large=Large',
+		'value' => 'small',
+		'disporder' => 13,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
+	$insertarray = array(
 		'name' => 'facebook_faces',
 		'title' => 'Show Facebook Friends Faces',
 		'description' => 'Do you wish to show profile photos when 2 or more Facebook friends like this?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 13,
+		'disporder' => 14,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -204,7 +217,7 @@ button=Button',
 light=Light
 dark=Dark',
 		'value' => 'light',
-		'disporder' => 14,
+		'disporder' => 15,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -215,7 +228,7 @@ dark=Dark',
 		'description' => 'Do you wish to show a recommend button for Google Plus?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 15,
+		'disporder' => 16,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -230,7 +243,7 @@ medium=Medium
 standard=Standard
 tall=Tall',
 		'value' => 'medium',
-		'disporder' => 16,
+		'disporder' => 17,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -244,7 +257,7 @@ inline=Inline
 bubble=Bubble
 none=None',
 		'value' => 'bubble',
-		'disporder' => 17,
+		'disporder' => 18,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -255,7 +268,7 @@ none=None',
 		'description' => 'If using inline annotation, what should the maximum width be in pixels? Must be larger than 120.',
 		'optionscode' => 'numeric',
 		'value' => 300,
-		'disporder' => 18,
+		'disporder' => 19,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -296,7 +309,7 @@ none=None',
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, \'script\', \'facebook-jssdk\'));</script>'),
 		'sid'		=> '-1',
@@ -308,7 +321,7 @@ none=None',
 	$insert_array = array(
 		'title'		=> 'global_share_facebook',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<div class="fb-like"{$data_layout}{$data_action}{$data_show_faces}{$data_share}{$data_colorscheme}></div>
+<div class="fb-like"{$data_layout}{$data_action}{$data_size_facebook}{$data_show_faces}{$data_share}{$data_colorscheme}></div>
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -346,7 +359,7 @@ none=None',
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation','google_width')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation','google_width')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
 	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google')");
 	rebuild_settings();
@@ -457,6 +470,15 @@ function sharethispage_run()
 		else
 		{
 			$data_share = " data-share=\"false\"";
+		}
+
+		if($mybb->settings['facebook_size'] == 'large')
+		{
+			$data_size_facebook = " data-size=\"large\"";
+		}
+		else
+		{
+			$data_size_facebook = " data-size=\"small\"";
 		}
 
 		if($mybb->settings['facebook_faces'] == 1)
