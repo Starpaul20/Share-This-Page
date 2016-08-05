@@ -82,8 +82,8 @@ function sharethispage_activate()
 
 	$insertarray = array(
 		'name' => 'twitter_related',
-		'title' => 'Related Username',
-		'description' => 'Specify another Twitter account to recommend to visitors after they use the Tweet button. Do not include the at symbol (@).',
+		'title' => 'Related Username(s)',
+		'description' => 'Specify another Twitter account(s) to recommend to visitors after they use the Tweet button. Do not include the at symbol (@). Seperate multiple usernames with a comma.',
 		'optionscode' => 'text',
 		'value' => '',
 		'disporder' => 4,
@@ -293,8 +293,8 @@ none=None',
 	$insert_array = array(
 		'title'		=> 'global_share_twitter',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<a href="https://twitter.com/share" class="twitter-share-button"{$data_text}{$data_via}{$data_size}{$data_related}{$data_count}{$data_hashtags}{$data_dnt}>{$lang->tweet}</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+\'://platform.twitter.com/widgets.js\';fjs.parentNode.insertBefore(js,fjs);}}(document, \'script\', \'twitter-wjs\');</script>
+<a href="https://twitter.com/share" class="twitter-share-button"{$data_size}{$data_text}{$data_via}{$data_hashtags}{$data_related}{$data_dnt}{$data_count}>{$lang->tweet}</a>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -415,7 +415,7 @@ function sharethispage_run()
 
 		if($mybb->settings['twitter_count'] == 0)
 		{
-			$data_count = " data-count=\"none\"";
+			$data_count = " data-show-count=\"false\"";
 		}
 
 		if(!empty($mybb->settings['twitter_hashtag']))
