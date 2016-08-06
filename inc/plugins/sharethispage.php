@@ -273,6 +273,31 @@ none=None',
 	);
 	$db->insert_query("settings", $insertarray);
 
+	$insertarray = array(
+		'name' => 'enablelinkedin',
+		'title' => 'Enable LinkedIn',
+		'description' => 'Do you wish to show a share button for Linked In?',
+		'optionscode' => 'yesno',
+		'value' => 1,
+		'disporder' => 20,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
+	$insertarray = array(
+		'name' => 'linkedin_counter',
+		'title' => 'LinkedIn Count Mode',
+		'description' => 'How would you like to display the counter for the LinkedIn button?',
+		'optionscode' => 'radio
+top=Vertical
+right=Horizontal
+none=No Count',
+		'value' => 'right',
+		'disporder' => 21,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
 	rebuild_settings();
 
 	// Insert Templates
@@ -283,6 +308,7 @@ none=None',
 	{$twitter}
 	{$facebook}
 	{$google}
+	{$linkedin}
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -349,6 +375,18 @@ none=None',
 	);
 	$db->insert_query("templates", $insert_array);
 
+	$insert_array = array(
+		'title'		=> 'global_share_linkedin',
+		'template'	=> $db->escape_string('<div style="padding:1px;">
+<script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+<script type="IN/Share"{$data_counter}></script>
+</div>'),
+		'sid'		=> '-1',
+		'version'	=> '',
+		'dateline'	=> TIME_NOW
+	);
+	$db->insert_query("templates", $insert_array);
+
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("footer", "#".preg_quote('<debugstuff>')."#i", '{$share}<debugstuff>');
 	find_replace_templatesets("header", "#".preg_quote('<div id="container">')."#i", '{$facebook_header}<div id="container">');
@@ -359,9 +397,9 @@ none=None',
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation','google_width')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation','google_width','enablelinkedin','linkedin_counter')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
-	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google')");
+	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google','global_share_linkedin')");
 	rebuild_settings();
 
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
@@ -378,7 +416,7 @@ function sharethispage_cache()
 	{
 		$templatelist .= ',';
 	}
-	$templatelist .= 'global_share,global_share_twitter,global_share_facebook_header,global_share_facebook,global_share_google_header,global_share_google';
+	$templatelist .= 'global_share,global_share_twitter,global_share_facebook_header,global_share_facebook,global_share_google_header,global_share_google,global_share_linkedin';
 }
 
 // Limit Registrations per day
@@ -541,7 +579,23 @@ function sharethispage_run()
 		eval('$google = "'.$templates->get('global_share_google').'";');
 	}
 
-	if(!empty($twitter) || !empty($facebook) || !empty($google))
+	$linkedin = '';
+	if($mybb->settings['enablelinkedin'] == 1)
+	{
+		$data_counter = '';
+		if($mybb->settings['linkedin_counter'] == 'right')
+		{
+			$data_counter = " data-counter=\"right\"";
+		}
+		elseif($mybb->settings['linkedin_counter'] == 'top')
+		{
+			$data_counter = " data-counter=\"top\"";
+		}
+
+		eval('$linkedin = "'.$templates->get('global_share_linkedin').'";');
+	}
+
+	if(!empty($twitter) || !empty($facebook) || !empty($google) || !empty($linkedin))
 	{
 		eval('$share = "'.$templates->get('global_share').'";');
 	}
