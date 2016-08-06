@@ -1,3 +1,10 @@
+1.2 (August 6th, 2016)
+- Added LinkedIn (Issue #1)
+- Added option for Facebook button size
+- Updated Twitter count option
+- Updated Twitter embed code
+- Updated Facebook code version
+
 1.1 (April 19th, 2015)
 - Added option for Twitter tweet text
 - Added option for Twitter opt-out of tailoring suggestions
