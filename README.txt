@@ -5,7 +5,7 @@ Created by: Starpaul20
 Copyright: ©2014
 License: GPL
 
-Allows you to create sharing links to Facebook, Google Plus, Twitter and LinkedIn. Links will appear at the bottom of all pages just above the footer.
+Allows you to create sharing links to Facebook, Google Plus, Twitter, LinkedIn and StumbleUpon. Links will appear at the bottom of all pages just above the footer.
 
 The settings for this plugin are located under the 'Share This Page Settings' added at the bottom of the settings page. This plugin offers full language support.
 

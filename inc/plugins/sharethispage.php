@@ -41,7 +41,7 @@ function sharethispage_activate()
 	$insertarray = array(
 		'name' => 'sharethispage',
 		'title' => 'Share This Page Settings',
-		'description' => 'Various option related to sharing pages on Facebook, Twitter and Google Plus can be managed and set here.',
+		'description' => 'Various option related to sharing pages on Facebook, Twitter, Google Plus, LinkedIn and StumbleUpon can be managed and set here.',
 		'disporder' => 45,
 		'isdefault' => 0,
 	);
@@ -298,6 +298,34 @@ none=No Count',
 	);
 	$db->insert_query("settings", $insertarray);
 
+	$insertarray = array(
+		'name' => 'enablestumbleupon',
+		'title' => 'Enable StumbleUpon',
+		'description' => 'Do you wish to show a StumbleUpon badge?',
+		'optionscode' => 'yesno',
+		'value' => 1,
+		'disporder' => 22,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
+	$insertarray = array(
+		'name' => 'stumbleupon_type',
+		'title' => 'StumbleUpon Badge Type',
+		'description' => 'What type of badge do you want for your StumbleUpon badge?',
+		'optionscode' => 'radio
+1=Small Badge with detached large counter
+2=Small Badge with attached large counter
+3=Small Badge with small counter
+5=Large Badge with counter below
+6=Large Badge with no counter
+4=Small Badge with no counter',
+		'value' => '2',
+		'disporder' => 23,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
 	rebuild_settings();
 
 	// Insert Templates
@@ -309,6 +337,7 @@ none=No Count',
 	{$facebook}
 	{$google}
 	{$linkedin}
+	{$stumbleupon}
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -387,6 +416,23 @@ none=No Count',
 	);
 	$db->insert_query("templates", $insert_array);
 
+	$insert_array = array(
+		'title'		=> 'global_share_stumbleupon',
+		'template'	=> $db->escape_string('<su:badge layout="{$data_type}"></su:badge>
+<script type="text/javascript">
+  (function() {
+    var li = document.createElement(\'script\'); li.type = \'text/javascript\'; li.async = true;
+    li.src = (\'https:\' == document.location.protocol ? \'https:\' : \'http:\') + \'//platform.stumbleupon.com/1/widgets.js\';
+    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(li, s);
+  })();
+</script>
+'),
+		'sid'		=> '-1',
+		'version'	=> '',
+		'dateline'	=> TIME_NOW
+	);
+	$db->insert_query("templates", $insert_array);
+
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("footer", "#".preg_quote('<debugstuff>')."#i", '{$share}<debugstuff>');
 	find_replace_templatesets("header", "#".preg_quote('<div id="container">')."#i", '{$facebook_header}<div id="container">');
@@ -397,9 +443,9 @@ none=No Count',
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation','google_width','enablelinkedin','linkedin_counter')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation','google_width','enablelinkedin','linkedin_counter','enablestumbleupon','stumbleupon_type')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
-	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google','global_share_linkedin')");
+	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google','global_share_linkedin','global_share_stumbleupon')");
 	rebuild_settings();
 
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
@@ -416,7 +462,7 @@ function sharethispage_cache()
 	{
 		$templatelist .= ',';
 	}
-	$templatelist .= 'global_share,global_share_twitter,global_share_facebook_header,global_share_facebook,global_share_google_header,global_share_google,global_share_linkedin';
+	$templatelist .= 'global_share,global_share_twitter,global_share_facebook_header,global_share_facebook,global_share_google_header,global_share_google,global_share_linkedin,global_share_stumbleupon';
 }
 
 // Limit Registrations per day
@@ -595,7 +641,15 @@ function sharethispage_run()
 		eval('$linkedin = "'.$templates->get('global_share_linkedin').'";');
 	}
 
-	if(!empty($twitter) || !empty($facebook) || !empty($google) || !empty($linkedin))
+	$stumbleupon = '';
+	if($mybb->settings['enablestumbleupon'] == 1)
+	{
+		$data_type = (int)$mybb->settings['stumbleupon_type'];
+
+		eval('$stumbleupon = "'.$templates->get('global_share_stumbleupon').'";');
+	}
+
+	if(!empty($twitter) || !empty($facebook) || !empty($google) || !empty($linkedin) || !empty($stumbleupon))
 	{
 		eval('$share = "'.$templates->get('global_share').'";');
 	}
