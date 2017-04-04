@@ -655,5 +655,3 @@ function sharethispage_run()
 		eval('$share = "'.$templates->get('global_share').'";');
 	}
 }
-
-?>
