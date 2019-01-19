@@ -223,12 +223,24 @@ dark=Dark',
 	$db->insert_query("settings", $insertarray);
 
 	$insertarray = array(
+		'name' => 'facebook_width',
+		'title' => 'Facebook Text Width',
+		'description' => 'If using standard layout, what should the minimum width be in pixels? Must be larger than 225.',
+		'optionscode' => 'numeric
+min=225',
+		'value' => 450,
+		'disporder' => 16,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
+	$insertarray = array(
 		'name' => 'enablegoogle',
 		'title' => 'Enable Google Plus',
 		'description' => 'Do you wish to show a recommend button for Google Plus?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 16,
+		'disporder' => 17,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -243,7 +255,7 @@ medium=Medium
 standard=Standard
 tall=Tall',
 		'value' => 'medium',
-		'disporder' => 17,
+		'disporder' => 18,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -257,7 +269,7 @@ inline=Inline
 bubble=Bubble
 none=None',
 		'value' => 'bubble',
-		'disporder' => 18,
+		'disporder' => 19,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -269,7 +281,7 @@ none=None',
 		'optionscode' => 'numeric
 min=120',
 		'value' => 300,
-		'disporder' => 19,
+		'disporder' => 20,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -280,7 +292,7 @@ min=120',
 		'description' => 'Do you wish to show a share button for Linked In?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 20,
+		'disporder' => 21,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -294,7 +306,7 @@ top=Vertical
 right=Horizontal
 none=No Count',
 		'value' => 'right',
-		'disporder' => 21,
+		'disporder' => 22,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -305,7 +317,7 @@ none=No Count',
 		'description' => 'Do you wish to show a StumbleUpon badge?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 22,
+		'disporder' => 23,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -322,7 +334,7 @@ none=No Count',
 6=Large Badge with no counter
 4=Small Badge with no counter',
 		'value' => '2',
-		'disporder' => 23,
+		'disporder' => 24,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -365,7 +377,7 @@ none=No Count',
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7";
+  js.src = \'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10\';
   fjs.parentNode.insertBefore(js, fjs);
 }(document, \'script\', \'facebook-jssdk\'));</script>'),
 		'sid'		=> '-1',
@@ -377,7 +389,7 @@ none=No Count',
 	$insert_array = array(
 		'title'		=> 'global_share_facebook',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<div class="fb-like"{$data_layout}{$data_action}{$data_size_facebook}{$data_show_faces}{$data_share}{$data_colorscheme}></div>
+<div class="fb-like"{$data_layout}{$data_width_facebook}{$data_action}{$data_size_facebook}{$data_show_faces}{$data_share}{$data_colorscheme}></div>
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -397,7 +409,7 @@ none=No Count',
 	$insert_array = array(
 		'title'		=> 'global_share_google',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<div class="g-plusone"{$data_size_google}{$data_annotation}{$data_width}></div>
+<div class="g-plusone"{$data_size_google}{$data_annotation}{$data_width_google}></div>
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -444,7 +456,7 @@ none=No Count',
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','enablegoogle','google_layout','google_annotation','google_width','enablelinkedin','linkedin_counter','enablestumbleupon','stumbleupon_type')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','facebook_width','enablegoogle','google_layout','google_annotation','google_width','enablelinkedin','linkedin_counter','enablestumbleupon','stumbleupon_type')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
 	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google','global_share_linkedin','global_share_stumbleupon')");
 	rebuild_settings();
@@ -548,6 +560,12 @@ function sharethispage_run()
 			$data_layout = " data-layout=\"button\"";
 		}
 
+		if($mybb->settings['facebook_layout'] == 'standard' && (int)$mybb->settings['facebook_width'] >= 225)
+		{
+			$facebook_width = (int)$mybb->settings['facebook_width'];
+			$data_width_facebook = " data-width=\"{$facebook_width}\"";
+		}
+
 		if($mybb->settings['facebook_share'] == 1)
 		{
 			$data_share = " data-share=\"true\"";
@@ -616,11 +634,11 @@ function sharethispage_run()
 			$data_annotation = " data-annotation=\"none\"";
 		}
 
-		$data_width = '';
+		$data_width_google = '';
 		if($mybb->settings['google_annotation'] == 'inline' && (int)$mybb->settings['google_width'] >= 120)
 		{
 			$google_width = (int)$mybb->settings['google_width'];
-			$data_width = " data-width=\"{$google_width}\"";
+			$data_width_google = " data-width=\"{$google_width}\"";
 		}
 
 		eval('$google = "'.$templates->get('global_share_google').'";');
