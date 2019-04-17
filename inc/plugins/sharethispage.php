@@ -41,7 +41,7 @@ function sharethispage_activate()
 	$insertarray = array(
 		'name' => 'sharethispage',
 		'title' => 'Share This Page Settings',
-		'description' => 'Various option related to sharing pages on Facebook, Twitter, Google Plus, LinkedIn and StumbleUpon can be managed and set here.',
+		'description' => 'Various option related to sharing pages on Facebook, Twitter and LinkedIn can be managed and set here.',
 		'disporder' => 45,
 		'isdefault' => 0,
 	);
@@ -235,64 +235,12 @@ min=225',
 	$db->insert_query("settings", $insertarray);
 
 	$insertarray = array(
-		'name' => 'enablegoogle',
-		'title' => 'Enable Google Plus',
-		'description' => 'Do you wish to show a recommend button for Google Plus?',
-		'optionscode' => 'yesno',
-		'value' => 1,
-		'disporder' => 17,
-		'gid' => (int)$gid
-	);
-	$db->insert_query("settings", $insertarray);
-
-	$insertarray = array(
-		'name' => 'google_layout',
-		'title' => 'Google Plus Layout',
-		'description' => 'Which layout design do you wish to do for the Google Plus button?',
-		'optionscode' => 'radio
-small=Small
-medium=Medium
-standard=Standard
-tall=Tall',
-		'value' => 'medium',
-		'disporder' => 18,
-		'gid' => (int)$gid
-	);
-	$db->insert_query("settings", $insertarray);
-
-	$insertarray = array(
-		'name' => 'google_annotation',
-		'title' => 'Google Plus Annotation',
-		'description' => 'Which type of annotation do you wish to do for the Google Plus button?',
-		'optionscode' => 'radio
-inline=Inline
-bubble=Bubble
-none=None',
-		'value' => 'bubble',
-		'disporder' => 19,
-		'gid' => (int)$gid
-	);
-	$db->insert_query("settings", $insertarray);
-
-	$insertarray = array(
-		'name' => 'google_width',
-		'title' => 'Google Plus Annotation Width',
-		'description' => 'If using inline annotation, what should the maximum width be in pixels? Must be larger than 120.',
-		'optionscode' => 'numeric
-min=120',
-		'value' => 300,
-		'disporder' => 20,
-		'gid' => (int)$gid
-	);
-	$db->insert_query("settings", $insertarray);
-
-	$insertarray = array(
 		'name' => 'enablelinkedin',
 		'title' => 'Enable LinkedIn',
 		'description' => 'Do you wish to show a share button for Linked In?',
 		'optionscode' => 'yesno',
 		'value' => 1,
-		'disporder' => 21,
+		'disporder' => 17,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -306,7 +254,7 @@ top=Vertical
 right=Horizontal
 none=No Count',
 		'value' => 'right',
-		'disporder' => 22,
+		'disporder' => 18,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -320,7 +268,6 @@ none=No Count',
 <div style="padding-top: 5px; padding-bottom: 5px;">
 	{$twitter}
 	{$facebook}
-	{$google}
 	{$linkedin}
 </div>'),
 		'sid'		=> '-1',
@@ -369,26 +316,6 @@ none=No Count',
 	$db->insert_query("templates", $insert_array);
 
 	$insert_array = array(
-		'title'		=> 'global_share_google_header',
-		'template'	=> $db->escape_string('<script src="https://apis.google.com/js/platform.js" async defer></script>'),
-		'sid'		=> '-1',
-		'version'	=> '',
-		'dateline'	=> TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-
-	$insert_array = array(
-		'title'		=> 'global_share_google',
-		'template'	=> $db->escape_string('<div style="padding:1px;">
-<div class="g-plusone"{$data_size_google}{$data_annotation}{$data_width_google}></div>
-</div>'),
-		'sid'		=> '-1',
-		'version'	=> '',
-		'dateline'	=> TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-
-	$insert_array = array(
 		'title'		=> 'global_share_linkedin',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
 <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
@@ -403,22 +330,20 @@ none=No Count',
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("footer", "#".preg_quote('<debugstuff>')."#i", '{$share}<debugstuff>');
 	find_replace_templatesets("header", "#".preg_quote('<div id="container">')."#i", '{$facebook_header}<div id="container">');
-	find_replace_templatesets("headerinclude", "#".preg_quote('{$stylesheets}')."#i", '{$stylesheets}{$google_header}');
 }
 
 // This function runs when the plugin is deactivated.
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','facebook_width','enablegoogle','google_layout','google_annotation','google_width','enablelinkedin','linkedin_counter')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','facebook_width','enablelinkedin','linkedin_counter')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
-	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_google_header','global_share_google','global_share_linkedin')");
+	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_linkedin')");
 	rebuild_settings();
 
 	include MYBB_ROOT."/inc/adminfunctions_templates.php";
 	find_replace_templatesets("footer", "#".preg_quote('{$share}')."#i", '', 0);
 	find_replace_templatesets("header", "#".preg_quote('{$facebook_header}')."#i", '', 0);
-	find_replace_templatesets("headerinclude", "#".preg_quote('{$google_header}')."#i", '', 0);
 }
 
 // Cache the header link template
@@ -429,13 +354,13 @@ function sharethispage_cache()
 	{
 		$templatelist .= ',';
 	}
-	$templatelist .= 'global_share,global_share_twitter,global_share_facebook_header,global_share_facebook,global_share_google_header,global_share_google,global_share_linkedin';
+	$templatelist .= 'global_share,global_share_twitter,global_share_facebook_header,global_share_facebook,global_share_linkedin';
 }
 
 // Limit Registrations per day
 function sharethispage_run()
 {
-	global $mybb, $lang, $templates, $twitter, $facebook, $facebook_header, $google, $google_header, $share;
+	global $mybb, $lang, $templates, $twitter, $facebook, $facebook_header, $share;
 	$lang->load("sharethispage");
 
 	$twitter = '';
@@ -559,45 +484,6 @@ function sharethispage_run()
 		eval('$facebook = "'.$templates->get('global_share_facebook').'";');
 	}
 
-	$google = $google_header = '';
-	if($mybb->settings['enablegoogle'] == 1)
-	{
-		eval('$google_header = "'.$templates->get('global_share_google_header').'";');
-
-		$data_size_google = '';
-		if($mybb->settings['google_layout'] == 'small')
-		{
-			$data_size_google = " data-size=\"small\"";
-		}
-		elseif($mybb->settings['google_layout'] == 'medium')
-		{
-			$data_size_google = " data-size=\"medium\"";
-		}
-		elseif($mybb->settings['google_layout'] == 'tall')
-		{
-			$data_size_google = " data-size=\"tall\"";
-		}
-
-		$data_annotation = '';
-		if($mybb->settings['google_annotation'] == 'inline')
-		{
-			$data_annotation = " data-annotation=\"inline\" data-width=\"300\"";
-		}
-		elseif($mybb->settings['google_annotation'] == 'none')
-		{
-			$data_annotation = " data-annotation=\"none\"";
-		}
-
-		$data_width_google = '';
-		if($mybb->settings['google_annotation'] == 'inline' && (int)$mybb->settings['google_width'] >= 120)
-		{
-			$google_width = (int)$mybb->settings['google_width'];
-			$data_width_google = " data-width=\"{$google_width}\"";
-		}
-
-		eval('$google = "'.$templates->get('global_share_google').'";');
-	}
-
 	$linkedin = '';
 	if($mybb->settings['enablelinkedin'] == 1)
 	{
@@ -614,7 +500,7 @@ function sharethispage_run()
 		eval('$linkedin = "'.$templates->get('global_share_linkedin').'";');
 	}
 
-	if(!empty($twitter) || !empty($facebook) || !empty($google) || !empty($linkedin))
+	if(!empty($twitter) || !empty($facebook) || !empty($linkedin))
 	{
 		eval('$share = "'.$templates->get('global_share').'";');
 	}

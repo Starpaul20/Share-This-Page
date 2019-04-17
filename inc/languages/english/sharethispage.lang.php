@@ -5,6 +5,6 @@
  */
 
 $l['sharethispage_info_name'] = "Share This Page";
-$l['sharethispage_info_desc'] = "Allows you to create sharing links to Facebook, Google Plus, Twitter and LinkedIn.";
+$l['sharethispage_info_desc'] = "Allows you to create sharing links to Facebook, Twitter and LinkedIn.";
 
 $l['tweet'] = "Tweet";
