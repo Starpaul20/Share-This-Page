@@ -70,12 +70,23 @@ function sharethispage_activate()
 	$db->insert_query("settings", $insertarray);
 
 	$insertarray = array(
+		'name' => 'twitter_url',
+		'title' => 'Tweet URL',
+		'description' => 'Do you want to set a specific URL in the Tweet? URL must include http://. If no URL is specificed, the board URL will be used.',
+		'optionscode' => 'text',
+		'value' => '',
+		'disporder' => 3,
+		'gid' => (int)$gid
+	);
+	$db->insert_query("settings", $insertarray);
+
+	$insertarray = array(
 		'name' => 'twitter_via',
 		'title' => 'Via Username',
 		'description' => 'Specify a Twitter account to recommend to visitors after they use the Tweet button. Do not include the at symbol (@).',
 		'optionscode' => 'text',
 		'value' => '',
-		'disporder' => 3,
+		'disporder' => 4,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -86,7 +97,7 @@ function sharethispage_activate()
 		'description' => 'Specify another Twitter account(s) to recommend to visitors after they use the Tweet button. Do not include the at symbol (@). Seperate multiple usernames with a comma.',
 		'optionscode' => 'text',
 		'value' => '',
-		'disporder' => 4,
+		'disporder' => 5,
 		'gid' => (int)$gid
 	);
 	$db->insert_query("settings", $insertarray);
@@ -97,17 +108,6 @@ function sharethispage_activate()
 		'description' => 'Do you wish to use a large twitter button?',
 		'optionscode' => 'yesno',
 		'value' => 0,
-		'disporder' => 5,
-		'gid' => (int)$gid
-	);
-	$db->insert_query("settings", $insertarray);
-
-	$insertarray = array(
-		'name' => 'twitter_count',
-		'title' => 'Show Tweet Count',
-		'description' => 'Do you wish to show a bubble showing how many times that page has been tweeted?',
-		'optionscode' => 'yesno',
-		'value' => 1,
 		'disporder' => 6,
 		'gid' => (int)$gid
 	);
@@ -279,8 +279,8 @@ none=No Count',
 	$insert_array = array(
 		'title'		=> 'global_share_twitter',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<a href="https://twitter.com/share" class="twitter-share-button"{$data_size}{$data_text}{$data_via}{$data_hashtags}{$data_related}{$data_dnt}{$data_count}>{$lang->tweet}</a>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button"{$data_size}{$data_text}{$data_url}{$data_via}{$data_hashtags}{$data_related}{$data_dnt} data-show-count="false">{$lang->tweet}</a>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
@@ -336,7 +336,7 @@ none=No Count',
 function sharethispage_deactivate()
 {
 	global $db;
-	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_via','twitter_related','twitter_large','twitter_count','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','facebook_width','enablelinkedin','linkedin_counter')");
+	$db->delete_query("settings", "name IN('enabletwitter','twitter_text','twitter_url','twitter_via','twitter_related','twitter_large','twitter_hashtag','twitter_dnt','enablefacebook','facebook_type','facebook_layout','facebook_share','facebook_size','facebook_faces','facebook_colorscheme','facebook_width','enablelinkedin','linkedin_counter')");
 	$db->delete_query("settinggroups", "name IN('sharethispage')");
 	$db->delete_query("templates", "title IN('global_share','global_share_twitter','global_share_facebook_header','global_share_facebook','global_share_linkedin')");
 	rebuild_settings();
@@ -372,6 +372,12 @@ function sharethispage_run()
 			$data_text = " data-text=\"{$twitter_text}\"";
 		}
 
+		if(!empty($mybb->settings['twitter_url']))
+		{
+			$twitter_url = htmlspecialchars_uni($mybb->settings['twitter_url']);
+			$data_url = " data-url=\"{$twitter_url}\"";
+		}
+
 		if(!empty($mybb->settings['twitter_via']))
 		{
 			$twitter_via = htmlspecialchars_uni($mybb->settings['twitter_via']);
@@ -387,11 +393,6 @@ function sharethispage_run()
 		if($mybb->settings['twitter_large'] == 1)
 		{
 			$data_size = " data-size=\"large\"";
-		}
-
-		if($mybb->settings['twitter_count'] == 0)
-		{
-			$data_count = " data-show-count=\"false\"";
 		}
 
 		if(!empty($mybb->settings['twitter_hashtag']))
