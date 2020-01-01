@@ -291,13 +291,7 @@ none=No Count',
 	$insert_array = array(
 		'title'		=> 'global_share_facebook_header',
 		'template'	=> $db->escape_string('<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = \'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2\';
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, \'script\', \'facebook-jssdk\'));</script>'),
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0"></script>'),
 		'sid'		=> '-1',
 		'version'	=> '',
 		'dateline'	=> TIME_NOW
@@ -307,7 +301,7 @@ none=No Count',
 	$insert_array = array(
 		'title'		=> 'global_share_facebook',
 		'template'	=> $db->escape_string('<div style="padding:1px;">
-<div class="fb-like"{$data_layout}{$data_width_facebook}{$data_action}{$data_size_facebook}{$data_show_faces}{$data_share}{$data_colorscheme}></div>
+<div class="fb-like" data-href="{$mybb->settings[\'bburl\']}"{$data_layout}{$data_width_facebook}{$data_action}{$data_size_facebook}{$data_show_faces}{$data_share}{$data_colorscheme}></div>
 </div>'),
 		'sid'		=> '-1',
 		'version'	=> '',
