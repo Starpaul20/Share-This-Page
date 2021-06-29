@@ -360,41 +360,48 @@ function sharethispage_run()
 	$twitter = '';
 	if($mybb->settings['enabletwitter'] == 1)
 	{
+		$data_text = '';
 		if(!empty($mybb->settings['twitter_text']))
 		{
 			$twitter_text = htmlspecialchars_uni($mybb->settings['twitter_text']);
 			$data_text = " data-text=\"{$twitter_text}\"";
 		}
 
+		$data_url = '';
 		if(!empty($mybb->settings['twitter_url']))
 		{
 			$twitter_url = htmlspecialchars_uni($mybb->settings['twitter_url']);
 			$data_url = " data-url=\"{$twitter_url}\"";
 		}
 
+		$data_via = '';
 		if(!empty($mybb->settings['twitter_via']))
 		{
 			$twitter_via = htmlspecialchars_uni($mybb->settings['twitter_via']);
 			$data_via = " data-via=\"{$twitter_via}\"";
 		}
 
+		$data_related = '';
 		if(!empty($mybb->settings['twitter_related']))
 		{
 			$twitter_related = htmlspecialchars_uni($mybb->settings['twitter_related']);
 			$data_related = " data-related=\"{$twitter_related}\"";
 		}
 
+		$data_size = '';
 		if($mybb->settings['twitter_large'] == 1)
 		{
 			$data_size = " data-size=\"large\"";
 		}
 
+		$twitter_hashtag = $data_hashtags = '';
 		if(!empty($mybb->settings['twitter_hashtag']))
 		{
 			$twitter_hashtag = htmlspecialchars_uni($mybb->settings['twitter_hashtag']);
 			$data_hashtags = " data-hashtags=\"{$twitter_hashtag}\"";
 		}
 
+		$data_dnt = '';
 		if($mybb->settings['twitter_dnt'] == 1)
 		{
 			$data_dnt = " data-dnt=\"true\"";
@@ -408,6 +415,7 @@ function sharethispage_run()
 	{
 		eval('$facebook_header = "'.$templates->get('global_share_facebook_header').'";');
 
+		$data_action = '';
 		if($mybb->settings['facebook_type'] == 'recommend')
 		{
 			$data_action = " data-action=\"recommend\"";
@@ -417,6 +425,7 @@ function sharethispage_run()
 			$data_action = " data-action=\"like\"";
 		}
 
+		$data_layout = '';
 		if($mybb->settings['facebook_layout'] == 'standard')
 		{
 			$data_layout = " data-layout=\"standard\"";
@@ -434,12 +443,14 @@ function sharethispage_run()
 			$data_layout = " data-layout=\"button\"";
 		}
 
+		$facebook_width = $data_width_facebook = '';
 		if($mybb->settings['facebook_layout'] == 'standard' && (int)$mybb->settings['facebook_width'] >= 225)
 		{
 			$facebook_width = (int)$mybb->settings['facebook_width'];
 			$data_width_facebook = " data-width=\"{$facebook_width}\"";
 		}
 
+		$data_share = '';
 		if($mybb->settings['facebook_share'] == 1)
 		{
 			$data_share = " data-share=\"true\"";
@@ -449,6 +460,7 @@ function sharethispage_run()
 			$data_share = " data-share=\"false\"";
 		}
 
+		$data_size_facebook = '';
 		if($mybb->settings['facebook_size'] == 'large')
 		{
 			$data_size_facebook = " data-size=\"large\"";
@@ -458,6 +470,7 @@ function sharethispage_run()
 			$data_size_facebook = " data-size=\"small\"";
 		}
 
+		$data_show_faces = '';
 		if($mybb->settings['facebook_faces'] == 1)
 		{
 			$data_show_faces = " data-show-faces=\"true\"";
@@ -467,6 +480,7 @@ function sharethispage_run()
 			$data_show_faces = " data-show-faces=\"false\"";
 		}
 
+		$data_colorscheme = '';
 		if($mybb->settings['facebook_colorscheme'] == 'dark')
 		{
 			$data_colorscheme = " data-colorscheme=\"dark\"";
