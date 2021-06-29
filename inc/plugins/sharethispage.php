@@ -291,7 +291,7 @@ none=No Count',
 	$insert_array = array(
 		'title'		=> 'global_share_facebook_header',
 		'template'	=> $db->escape_string('<div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0"></script>'),
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0" nonce="uRqNyOCi"></script>'),
 		'sid'		=> '-1',
 		'version'	=> '',
 		'dateline'	=> TIME_NOW
